@@ -13,16 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
+      - name: Use local Python
+        shell: cmd
         run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-
-      - name: Run tests
-        run: |
-          python -m pytest -q
+          set PYTHON=C:\Users\UsEr\AppData\Local\Programs\Python\Python313\python.exe
+          %PYTHON% --version
+          %PYTHON% -m pip install --upgrade pip
+          %PYTHON% -m pip install pytest
+          %PYTHON% -m pytest -q
