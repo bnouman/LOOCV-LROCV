@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Use local Python
+      - name: Run tests using local Python
         shell: cmd
         run: |
           set PYTHON=C:\Users\UsEr\AppData\Local\Programs\Python\Python313\python.exe
@@ -21,5 +21,4 @@ jobs:
           %PYTHON% -m pip install --upgrade pip
           %PYTHON% -m pip install pytest
           set PYTHONPATH=%CD%
-	  %PYTHON% -m pytest -q
-
+          %PYTHON% -m pytest -q
