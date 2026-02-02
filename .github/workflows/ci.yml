@@ -20,4 +20,6 @@ jobs:
           %PYTHON% --version
           %PYTHON% -m pip install --upgrade pip
           %PYTHON% -m pip install pytest
-          %PYTHON% -m pytest -q
+          set PYTHONPATH=%CD%
+	  %PYTHON% -m pytest -q
+
