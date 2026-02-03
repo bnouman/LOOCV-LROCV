@@ -19,6 +19,6 @@ jobs:
           set PYTHON=C:\Users\UsEr\AppData\Local\Programs\Python\Python313\python.exe
           %PYTHON% --version
           %PYTHON% -m pip install --upgrade pip
-          %PYTHON% -m pip install pytest numpy scipy
+          %PYTHON% -m pip install -r requirements.txt -r requirements-dev.txt
           set PYTHONPATH=%CD%
           %PYTHON% -m pytest -q
