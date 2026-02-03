@@ -1,0 +1,30 @@
+name: CD - GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Create zip artifact
+        shell: cmd
+        run: |
+          if exist dist rmdir /s /q dist
+          mkdir dist
+          powershell -NoProfile -Command "Compress-Archive -Path loocv_lrocv,tests,LOOCV_LROCV.ipynb,requirements.txt,requirements-dev.txt,.github -DestinationPath dist\loocv-lrocv.zip -Force"
+          dir dist
+
+      - name: Create Release and upload zip
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/loocv-lrocv.zip
