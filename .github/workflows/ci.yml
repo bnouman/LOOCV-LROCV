@@ -20,21 +20,21 @@ jobs:
           set PYTHON=C:\Users\UsEr\AppData\Local\Programs\Python\Python313\python.exe
 
           %PYTHON% --version
-          %PYTHON% -m pip install --upgrade pip
 
-          rem Install dependencies
-          %PYTHON% -m pip install -r requirements.txt -r requirements-dev.txt
+          rem Create a clean virtual environment every run
+          if exist .venv rmdir /s /q .venv
+          %PYTHON% -m venv .venv
+          call .venv\Scripts\activate.bat
 
-          rem Lint/format (same as your local pre-commit)
-          %PYTHON% -m pre_commit run --all-files
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
 
-          rem Type checks
-          %PYTHON% -m mypy loocv_lrocv
+          python -m pre_commit run --all-files
+          python -m mypy loocv_lrocv
+          python -m bandit -r loocv_lrocv -q
 
-          rem Security checks
-          %PYTHON% -m bandit -r loocv_lrocv -q
-          %PYTHON% -m pip_audit
+          rem Audit ONLY your project dependencies (not random installed stuff)
+          python -m pip_audit -r requirements.txt
 
-          rem Tests + coverage
           set PYTHONPATH=%CD%
-          %PYTHON% -m pytest -q --cov=loocv_lrocv --cov-report=term-missing
+          python -m pytest -q --cov=loocv_lrocv --cov-report=term-missing
