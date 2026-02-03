@@ -4,11 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "loocv-lrocv"
-<<<<<<< Updated upstream
-version = "0.1.1"
-=======
 version = "0.1.3"
->>>>>>> Stashed changes
 description = "LOOCV/LROCV utilities"
 readme = "README.md"
 requires-python = ">=3.10"
