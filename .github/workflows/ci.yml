@@ -13,12 +13,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Run tests using local Python
+      - name: Run CI using local Python
         shell: cmd
         run: |
           set PYTHON=C:\Users\UsEr\AppData\Local\Programs\Python\Python313\python.exe
+
           %PYTHON% --version
           %PYTHON% -m pip install --upgrade pip
+
+          rem Install dependencies
           %PYTHON% -m pip install -r requirements.txt -r requirements-dev.txt
+
+          rem Lint/format (same as your local pre-commit)
+          %PYTHON% -m pre_commit run --all-files
+
+          rem Type checks
+          %PYTHON% -m mypy loocv_lrocv
+
+          rem Security checks
+          %PYTHON% -m bandit -r loocv_lrocv -q
+          %PYTHON% -m pip_audit
+
+          rem Tests + coverage
           set PYTHONPATH=%CD%
-          %PYTHON% -m pytest -q
+          %PYTHON% -m pytest -q --cov=loocv_lrocv --cov-report=term-missing
