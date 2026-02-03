@@ -1,7 +1,9 @@
 from loocv_lrocv.metrics import cindex
 
+
 def test_sanity():
     assert 1 + 1 == 2
+
 
 def test_cindex_runs():
     y_true = [1, 2, 3]
