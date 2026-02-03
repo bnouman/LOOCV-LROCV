@@ -1,0 +1,25 @@
+name: Tag version matches pyproject
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  verify:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Verify version
+        shell: cmd
+        run: |
+          set PYTHON=C:\Users\UsEr\AppData\Local\Programs\Python\Python313\python.exe
+          for /f "delims=" %%v in ('%PYTHON% -c "import tomllib; print(tomllib.load(open(\"pyproject.toml\",\"rb\"))[\"project\"][\"version\"]) "') do set VER=%%v
+          echo pyproject version: %VER%
+          echo tag: %GITHUB_REF_NAME%
+          if not "v%VER%"=="%GITHUB_REF_NAME%" (
+            echo ERROR: tag (%GITHUB_REF_NAME%) does not match pyproject version (v%VER%)
+            exit /b 1
+          )
+          echo OK: tag matches version
